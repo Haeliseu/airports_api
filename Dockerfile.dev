@@ -1,0 +1,30 @@
+# Dockerfile pour le développement avec hot-reload
+FROM node:18-alpine
+
+# Installer les outils de développement
+RUN apk add --no-cache postgresql-client netcat-openbsd
+
+# Créer le répertoire de l'application
+WORKDIR /app
+
+# Copier les fichiers de dépendances
+COPY package*.json ./
+
+# Installer toutes les dépendances (dev incluses)
+RUN npm install
+
+# Copier le reste de l'application
+COPY . .
+
+# Rendre le script d'entrypoint exécutable
+RUN chmod +x docker-entrypoint.sh
+
+# Exposer le port
+EXPOSE 3000
+
+# Variable d'environnement
+ENV NODE_ENV=development
+
+# Utiliser le script d'entrypoint
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
+

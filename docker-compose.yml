@@ -1,0 +1,90 @@
+services:
+  # Base de données PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: airports_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-airports_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-airports_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - airport_network
+
+  # Application API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: airports_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Utiliser le script d'entrypoint pour la migration automatique
+    entrypoint: ["/bin/sh", "/app/docker-entrypoint.sh"]
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${PORT:-3000}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-airports_db}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      # Monter le dossier data pour accéder au CSV lors de l'import
+      - ./data:/app/data:ro
+      # Pour le développement (optionnel, commenter en production)
+      # - ./:/app
+      # - /app/node_modules
+    networks:
+      - airport_network
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 3000 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # Outil d'administration PostgreSQL (optionnel)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: airports_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@admin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - airport_network
+    depends_on:
+      - postgres
+    profiles:
+      - tools  # Démarrer uniquement avec --profile tools
+
+networks:
+  airport_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
