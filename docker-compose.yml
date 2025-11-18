@@ -22,6 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     depends_on:
       - postgres
     entrypoint: ["/bin/sh", "/app/docker-entrypoint.sh"]
