@@ -34,7 +34,7 @@ services:
     ports:
       - "${PORT}:3000"
     volumes:
-      - data:/app/data
+      - app_data:/app/data
     networks:
       - airport_network
     healthcheck:
@@ -51,3 +51,4 @@ networks:
 volumes:
   postgres_data:
   pgadmin_data:
+  app_data:
