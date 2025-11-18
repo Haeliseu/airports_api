@@ -34,7 +34,7 @@ services:
     ports:
       - "${PORT}:3000"
     volumes:
-      - ./data:/app/data:ro
+      - data:/app/data
     networks:
       - airport_network
     healthcheck:
