@@ -15,8 +15,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - airport_network
 
   api:
     build:
@@ -38,18 +36,12 @@ services:
       - "${PORT}:3000"
     volumes:
       - app_data:/app/data
-    networks:
-      - airport_network
     healthcheck:
       test: ["CMD-SHELL", "nc -z localhost 3000 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
       start_period: 30s
-
-networks:
-  airport_network:
-    driver: local
 
 volumes:
   postgres_data:
