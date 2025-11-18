@@ -1,9 +1,6 @@
 services:
-  # Base de données PostgreSQL
   postgres:
     image: postgres:15-alpine
-    container_name: airports_postgres
-    restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_NAME:-airports_db}
       POSTGRES_USER: ${DB_USER:-postgres}
@@ -21,16 +18,10 @@ services:
     networks:
       - airport_network
 
-  # Application API
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: airports_api
-    restart: unless-stopped
+    image: airports_api:latest
     depends_on:
       - postgres
-    # Utiliser le script d'entrypoint pour la migration automatique
     entrypoint: ["/bin/sh", "/app/docker-entrypoint.sh"]
     environment:
       NODE_ENV: ${NODE_ENV:-production}
@@ -43,11 +34,7 @@ services:
     ports:
       - "${PORT:-3000}:10001"
     volumes:
-      # Monter le dossier data pour accéder au CSV lors de l'import
       - ./data:/app/data:ro
-      # Pour le développement (optionnel, commenter en production)
-      # - ./:/app
-      # - /app/node_modules
     networks:
       - airport_network
     healthcheck:
@@ -59,11 +46,8 @@ services:
 
 networks:
   airport_network:
-    driver: bridge
+    driver: overlay
 
 volumes:
   postgres_data:
-    driver: local
   pgadmin_data:
-    driver: local
-
