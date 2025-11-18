@@ -49,7 +49,7 @@ services:
 
 networks:
   airport_network:
-    driver: overlay
+    driver: local
 
 volumes:
   postgres_data:
