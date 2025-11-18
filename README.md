@@ -13,7 +13,7 @@ API REST pour obtenir les codes ICAO des aéroports à partir de coordonnées g�
 
 ```bash
 # 1. Cloner le projet
-cd /Applications/Dev/geticaofromlocation
+cd /Applications/Dev/airports_api
 
 # 2. Placer votre fichier airports.csv dans le dossier data/
 # Télécharger depuis: https://ourairports.com/data/
