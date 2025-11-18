@@ -22,7 +22,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: airports_api
     depends_on:
       - postgres
     entrypoint: ["/bin/sh", "/app/docker-entrypoint.sh"]
