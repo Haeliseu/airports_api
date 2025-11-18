@@ -15,8 +15,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    depends_on:
-      - postgres
     entrypoint: ["/bin/sh", "/app/docker-entrypoint.sh"]
     environment:
       NODE_ENV: ${NODE_ENV}
