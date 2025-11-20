@@ -1,10 +1,22 @@
 services:
-
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
 
   app:
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      - postgres
     entrypoint: ["/bin/sh", "/app/docker-entrypoint.sh"]
     environment:
       NODE_ENV: ${NODE_ENV}
@@ -20,4 +32,6 @@ services:
       - app_data:/app/data
 
 volumes:
+  postgres_data:
+  pgadmin_data:
   app_data:
