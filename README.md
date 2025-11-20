@@ -34,16 +34,16 @@ L'application démarre automatiquement :
 
 ## 📖 Documentation
 
-- **API** : http://localhost:3000/api/icao
-- **Swagger** : http://localhost:3000/api-docs
+- **API** : https://airports.arisalexia.fr/icao
+- **Swagger** : https://airports.arisalexia.fr/api-docs
 
 ## 🔗 Endpoints
 
-### GET `/api/icao`
+### GET `/icao`
 Obtenir l'aéroport le plus proche d'une localisation.
 
 ```bash
-curl "http://localhost:3000/api/icao?lat=48.8566&lon=2.3522"
+curl "https://airports.arisalexia.fr/icao?lat=48.8566&lon=2.3522"
 ```
 
 **Paramètres :**
@@ -67,11 +67,11 @@ curl "http://localhost:3000/api/icao?lat=48.8566&lon=2.3522"
 }
 ```
 
-### GET `/api/icao/nearest`
+### GET `/icao/nearest`
 Obtenir les N aéroports les plus proches.
 
 ```bash
-curl "http://localhost:3000/api/icao/nearest?lat=48.8566&lon=2.3522&limit=5"
+curl "https://airports.arisalexia.fr/icao/nearest?lat=48.8566&lon=2.3522&limit=5"
 ```
 
 **Paramètres :**
@@ -80,15 +80,15 @@ curl "http://localhost:3000/api/icao/nearest?lat=48.8566&lon=2.3522&limit=5"
 - `limit` (optional) : Nombre d'aéroports (défaut: 5)
 - `maxDistance` (optional) : Distance maximale en km
 
-### GET `/api/icao/search`
+### GET `/icao/search`
 Rechercher un aéroport par code ICAO ou nom.
 
 ```bash
 # Par code ICAO
-curl "http://localhost:3000/api/icao/search?code=LFPG"
+curl "https://airports.arisalexia.fr/icao/search?code=LFPG"
 
 # Par nom
-curl "http://localhost:3000/api/icao/search?name=Paris&limit=10"
+curl "https://airports.arisalexia.fr/icao/search?name=Paris&limit=10"
 ```
 
 **Paramètres :**
@@ -158,7 +158,7 @@ NODE_ENV=production
 docker-compose ps
 
 # Test de l'API
-curl http://localhost:3000/api/icao?lat=48.8566&lon=2.3522
+curl https://airports.arisalexia.fr/icao?lat=48.8566&lon=2.3522
 
 # Compter les aéroports importés
 docker-compose exec postgres psql -U postgres -d airports_db -c "SELECT COUNT(*) FROM airports;"

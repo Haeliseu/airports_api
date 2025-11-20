@@ -26,13 +26,13 @@ const swaggerSpecs = swaggerJsdoc({
       version: '1.0.0',
       description: 'API pour obtenir les codes ICAO à partir d\'une localisation'
     },
-    servers: [{ url: 'http://localhost:3000/api', description: 'Serveur de développement' }]
+    servers: [{ url: 'https://airports.arisalexia.fr', description: 'Serveur de développement' }]
   },
   apis: ['./routes/*.js']
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
-app.use('/api', indexRouter);
+app.use('/', indexRouter);
 
 // Gestionnaires d'erreurs
 app.use((req, res) => res.status(404).json({ success: false, message: 'Route non trouvée' }));
