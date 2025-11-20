@@ -26,7 +26,7 @@ const swaggerSpecs = swaggerJsdoc({
       version: '1.0.0',
       description: 'API pour obtenir les codes ICAO à partir d\'une localisation'
     },
-    servers: [{ url: '/', description: 'Serveur de développement' }]
+    servers: [{ url: 'https://airports.arisalexia.fr', description: 'Serveur de développement' }]
   },
   apis: ['./routes/*.js']
 });
