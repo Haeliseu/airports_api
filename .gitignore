@@ -9,9 +9,6 @@ yarn-error.log*
 .env.local
 .env.*.local
 
-# Data files (keep example)
-data/airports.csv
-
 # IDE
 .vscode/
 .idea/
