@@ -10,7 +10,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "${DB_PORT}:5432"
-
+    restart: always
   app:
     build:
       context: .
@@ -30,6 +30,7 @@ services:
       - "${PORT}:3000"
     volumes:
       - app_data:/app/data
+    restart: on-failure:10
 
 volumes:
   postgres_data:
